@@ -17,11 +17,13 @@ class UserModel:
             for u in self._users.values():
                 f.write(f"{u['user_id']},{u['username']},{u['age']}\n")
             
-    def get_users(self, user_id=None):
+    def get_users(self, user_id, items = None, offset = None):
         if user_id is None:
-            return list(self._users.values())  # Return all users if no user_id is specified
+            items = len(self._users) if items is None else items 
+            offset = 0 if offset is None else offset
+            return list(self._users.values())[offset:offset+items]  # Return just one paginate
         elif user_id in self._users:
-             return self._users[user_id]
+            return self._users[user_id]
         else:
             return {} 
 

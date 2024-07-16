@@ -18,13 +18,12 @@ class UserResources(Resource):
     
     @marshal_with(resource_fields)
     def get(self, user_id=None):
-        sent_message_before = request.cookies.get("sent messages before")
-        if sent_message_before == "true":
-            app.logger.info(f"This user-{g.uuid} sent messages before")
-        else:
-            app.logger.info(f"This user-{g.uuid} has no sent any messages")
+        parser = self.parser
+        parser.add_argument("items", type=int, help="it is an integer representing of numbers of the users")
+        parser.add_argument("offset", type = int, help="the beginging index of users")
+        args = parser.parse_args()
         app.logger.info(f"uuid: {g.uuid} is_connected: {g.conn['is_connected']}")
-        return user_model.get_users(user_id)
+        return user_model.get_users(user_id, items=args.get("items"), offset = args.get("offset"))
     
     @marshal_with(resource_fields) 
     def post(self):
