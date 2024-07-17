@@ -17,15 +17,28 @@ class UserModel:
             for u in self._users.values():
                 f.write(f"{u['user_id']},{u['username']},{u['age']}\n")
             
-    def get_users(self, user_id, items = None, offset = None):
+    def get_users(self, user_id, items = None, offset = None, filter_by= None):
         if user_id is None:
             items = len(self._users) if items is None else items 
             offset = 0 if offset is None else offset
-            return list(self._users.values())[offset:offset+items]  # Return just one paginate
+            users = list(self._users.values())[offset:offset+items]  # Return just one paginate
+            return users if filter_by is None else self.filter(users, filter_by)
         elif user_id in self._users:
             return self._users[user_id]
         else:
             return {} 
+        
+    def filter(self, users, filter_by):
+        for op in {">", "=","<"}:
+            if op in filter_by:
+                #filter_by => age>10
+                #age, 10 = field, val
+                #user = {"age":10, "username":Andy}
+                field, val = filter_by.split(op)
+                op = "==" if op is "=" else op
+                return [user for user in users if field in user and eval(f"{user[field]}{op}{val}")]
+        return []
+                
 
     def new_user(self, username, age):
         with open(self.path, 'a') as f:
