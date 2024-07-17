@@ -22,13 +22,15 @@ class UserResources(Resource):
         parser.add_argument("items", type=int, help="it is an integer representing of numbers of the users")
         parser.add_argument("offset", type=int, help="the beginging index of users")
         parser.add_argument("filter_by", type=str, help="a string representing the search creteria")
+        parser.add_argument("sort_by", type=str, help="a string representing the sort criteria")
         args = parser.parse_args()
         app.logger.info(f"uuid: {g.uuid} is_connected: {g.conn['is_connected']}")
         return user_model.get_users(
             user_id, 
             items=args.get("items"), 
             offset = args.get("offset"),
-            filter_by = args.get("filter_by")
+            filter_by = args.get("filter_by"),
+            sort_by = args.get("sort_by")
             )
     
     @marshal_with(resource_fields) 
