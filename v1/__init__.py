@@ -1,8 +1,8 @@
 from flask import Blueprint
 from flask_restful import Api
 from .userResources import UserResources
-from v1.classroomResources import ClassroomResources
-from v1.messageResources import MessageResources
+from .classroomResources import ClassroomResources
+from .messageResources import MessageResources
 
 v1_bp = Blueprint("v1_blueprint",__name__)
 api = Api(v1_bp)

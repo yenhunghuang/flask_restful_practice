@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, g
 from performance import Performance
 from v1 import v1_bp
+from v2 import v2_bp
 import uuid, time
+
 
 app = Flask(__name__)
 app.config.from_object("config.DevelopmentConfig")  # Ensure config module is correctly set up
@@ -22,6 +24,7 @@ def postprocess(response):
     return response
 
 app.register_blueprint(v1_bp,url_prefix="/v1")
+app.register_blueprint(v2_bp,url_prefix="/v2")
 
 if __name__ == '__main__':
     print(app.url_map)
