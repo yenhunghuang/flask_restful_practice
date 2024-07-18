@@ -45,7 +45,8 @@ class UserModel:
         else:
             #age.descend
             field, order = sort_by.split(".")
-            if field in ["user_id", "username", "age"]:
+            # if field in ["user_id", "username", "age"]:
+            if field in set(field for user in users for field in user.keys()):
                 return sorted(users, key=lambda user: user[field],reverse=order=="desc")
             else:
                 return []
