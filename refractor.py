@@ -1,14 +1,10 @@
-from flask import Flask, jsonify, request, g
-from flask_restful import Api
-from userResources import UserResources
-from classroomResources import ClassroomResources
-from messageResources import MessageResources
+from flask import Flask, jsonify, g
 from performance import Performance
+from v1 import v1_bp
 import uuid, time
 
 app = Flask(__name__)
 app.config.from_object("config.DevelopmentConfig")  # Ensure config module is correctly set up
-api = Api(app)
 performance = Performance("performance.csv") #紀錄每一筆response info 到performance.csv
 
 @app.before_request
@@ -25,10 +21,9 @@ def postprocess(response):
     performance.log(g)
     return response
 
-api.add_resource(UserResources, "/users", "/users/<int:user_id>")
-api.add_resource(ClassroomResources, "/classrooms", "/classrooms/<int:class_id>")
-api.add_resource(MessageResources, "/message/<int:user_id>")
+app.register_blueprint(v1_bp,url_prefix="/v1")
 
 if __name__ == '__main__':
+    print(app.url_map)
     app.run(port=8001)
     

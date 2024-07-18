@@ -1,8 +1,9 @@
 from flask_restful import Resource, reqparse, marshal_with, fields
-from users import UserModel  # Make sure the module and class names are correct
+from v1.users import UserModel  # Make sure the module and class names are correct
 from flask import current_app as app
 from flask import g,request
-user_model = UserModel('user.csv')  # Ensure the UserModel class is designed to handle initialization with CSV
+import pathlib, os
+user_model = UserModel(os.path.join(pathlib.Path(__file__).parent,'user.csv')) # Ensure the UserModel class is designed to handle initialization with CSV
 
 class UserResources(Resource):
     resource_fields = {

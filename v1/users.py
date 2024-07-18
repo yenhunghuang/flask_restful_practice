@@ -35,7 +35,7 @@ class UserModel:
                 #age, 10 = field, val
                 #user = {"age":10, "username":Andy}
                 field, val = filter_by.split(op)
-                op = "==" if op is "=" else op
+                op = "==" if op is '=' else op
                 return [user for user in users if field in user and eval(f"{user[field]}{op}{val}")]
         return []
     
